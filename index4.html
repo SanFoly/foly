@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qual o primeiro nome do desenvolvedor do jogo?</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #palavraInput {
+      font-size: 16px;
+      padding: 8px;
+      margin-bottom: 20px;
+    }
+
+    #verificarBtn {
+      font-size: 18px;
+      padding: 10px;
+    }
+
+    #resultado {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Qual o primeiro nome do desenvolvedor desse jogo?</h1>
+
+<!-- Adicione um elemento para exibir o número de vidas -->
+<p>Vidas: <span id="vidas">5</span></p>
+
+<p>Tente acertar a palavra:</p>
+<input type="text" id="palavraInput" placeholder="Digite a palavra">
+
+<button id="verificarBtn" onclick="verificarPalavra()">Verificar</button>
+
+<p id="resultado"></p>
+
+<script>
+  // Palavra a ser acertada
+  const palavraCorreta = "San";
+
+  // Número inicial de vidas
+  let vidas = 5;
+
+  // Função para verificar se a palavra está correta
+  function verificarPalavra() {
+    const palavraDigitada = document.getElementById("palavraInput").value;
+
+    if (palavraDigitada.toLowerCase() === palavraCorreta.toLowerCase()) {
+      document.getElementById("resultado").innerHTML = "Parabéns! Indo para a próxima página.";
+      // Redireciona para a próxima página após 2 segundos (2000 milissegundos)
+      setTimeout(function() {
+        window.location.href = "proximaPagina.html?vidas=" + vidas;
+      }, 2000);
+    } else {
+      vidas--;
+      document.getElementById("vidas").innerHTML = vidas;
+      document.getElementById("resultado").innerHTML = "Tente novamente.";
+
+      // Verifica se o jogador perdeu todas as vidas
+      if (vidas === 0) {
+        document.getElementById("resultado").innerHTML = "Você perdeu todas as vidas. Game Over.";
+        // Adicione aqui o código para lidar com o game over
+      }
+    }
+  }
+</script>
+
+</body>
+</html>

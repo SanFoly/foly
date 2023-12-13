@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja de Moedas</title>
+</head>
+<body>
+
+<h1>Bem-vindo à Loja de Moedas</h1>
+<p>Seu saldo atual: <span id="saldo">100</span> moedas</p>
+
+<button onclick="comprarMoedas(10)">Comprar 10 moedas</button>
+<button onclick="windows.location.href=">Comprar 50 moedas</button>
+
+<script>
+    let saldoAtual = 100;
+
+    function comprarMoedas(quantidade) {
+        // Aqui você pode adicionar lógica para processar a compra
+        // Por exemplo, você pode chamar uma função do back-end para atualizar o saldo do usuário
+        // ou simplesmente atualizar o saldo localmente se não estiver usando um back-end.
+        saldoAtual += quantidade;
+        document.getElementById('saldo').innerText = saldoAtual;
+    }
+    
+    function comprarMoedas(quantidade) {
+  fetch('http://localhost:3000/comprar-moedas', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ quantidade }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    saldoAtual = data.novoSaldo;
+    document.getElementById('saldo').innerText = saldoAtual;
+  })
+  .catch(error => console.error('Erro:', error));
+}
+
+    
+</script>
+
+</body>
+</html>

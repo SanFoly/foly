@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha com Robô</title>
+    <style>
+    
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-image: ;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            grid-gap: 5px;
+        }
+
+        .cell {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #333;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        #menu-buttons {
+            margin-top: 20px;
+        }
+        
+
+        button {
+            padding: 10px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 0.5em;
+        }
+
+        #shop-button {
+            background-color: #008CBA;
+            height: auto;
+            
+        }
+    </style>
+</head>
+<body>
+
+    <img src="../img/20231212_174226.png">
+
+    <div id="board"></div>
+
+    <div id="menu-buttons">
+        <a href="../index2.html"><button>Entrar</button></a>
+        <br>
+        <br>
+        <a href="../index3.html"><button id="shop-button">Loja</button></a>
+    </div>
+
+    <script>
+        // (O restante do código JavaScript permanece o mesmo)
+    </script>
+
+<script>
+  const levels = [
+  ['MAÇÃ', 'BANANA', 'LARANJA', 'MORANGO', 'ABACAXI'],
+  ['CACHORRO', 'GATO', 'PÁSSARO', 'PEIXE', 'COELHO'],
+  ['CARRO', 'BICICLETA', 'AVIÃO', 'BARCO', 'ÔNIBUS']
+];
+
+let currentLevel = 0;
+let selectedCells = [];
+let correctWordFound = false;
+
+document.addEventListener('DOMContentLoaded', createGameBoard);
+
+function createGameBoard() {
+  const gameBoard = document.getElementById('game-board');
+  setupLevel(gameBoard, levels[currentLevel]);
+
+  const completeButton = document.createElement('button');
+  completeButton.textContent = 'Concluir';
+  completeButton.addEventListener('click', completeGame);
+  gameBoard.appendChild(completeButton);
+}
+
+function setupLevel(gameBoard, level) {
+  for (let i = 0; i < level.length; i++) {
+    const word = level[i];
+    const shuffledWord = shuffleWord(word);
+
+    for (let j = 0; j < word.length; j++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      cell.dataset.originalLetter = word[j];
+      cell.textContent = shuffledWord[j];
+      cell.addEventListener('click', () => revealCell(cell, word));
+      gameBoard.appendChild(cell);
+    }
+  }
+}
+
+function shuffleWord(word) {
+  const shuffledArray = word.split('').sort(() => Math.random() - 0.5);
+  return shuffledArray.join('');
+}
+
+function revealCell(cell, word) {
+  if (!correctWordFound && !cell.classList.contains('revealed')) {
+    cell.classList.add('revealed');
+    selectedCells.push(cell);
+    checkSelectedWord(word);
+  }
+}
+
+function checkSelectedWord(word) {
+  let selectedWord = '';
+  for (const cell of selectedCells) {
+    selectedWord += cell.textContent;
+  }
+
+  if (selectedWord === word) {
+    correctWordFound = true;
+    alert('Parabéns! Palavra correta encontrada: ' + selectedWord);
+    moveToNextLevel();
+  }
+}
+
+function moveToNextLevel() {
+  currentLevel++;
+
+  if (currentLevel < levels.length) {
+    alert('Próximo nível!');
+    resetGame();
+    createGameBoard();
+  } else {
+    alert('Parabéns! Você completou todos os níveis.');
+  }
+}
+
+function completeGame() {
+  if (!correctWordFound) {
+    alert('Você precisa encontrar a palavra correta antes de concluir.');
+  }
+  clearSelection();
+}
+
+function resetGame() {
+  correctWordFound = false;
+  selectedCells = [];
+  const gameBoard = document.getElementById('game-board');
+  gameBoard.innerHTML = '';
+}
+
+</script>
+
+</body>
+</html>
